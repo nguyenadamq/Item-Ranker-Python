@@ -12,4 +12,4 @@ itemArray = functions.loopUserInput(itemArray)
 print(f"Here is the array of items that you entered: ")
 functions.printItems(itemArray)
 
-input = input("Press enter to exit.")
+input = input("\nPress enter to exit.")
