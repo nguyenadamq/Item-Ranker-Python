@@ -7,8 +7,8 @@ itemArray = []
 
 #Start getting user input
 itemArray = functions.loopUserInput(itemArray)
+
 #print items in array
-print(f"Here is the array of items that you entered: ")
 functions.printItems(itemArray)
 
 option = input("\nWould you like to continue adding?(Y/y) or (N/n)")
@@ -17,7 +17,6 @@ while option != "n":
     #Start getting user input
     itemArray = functions.loopUserInput(itemArray)
     #print items in array
-    print(f"Here is the array of items that you entered: ")
     functions.printItems(itemArray)
     option = input("\nWould you like to continue adding?(Y/y) or (N/n)")
     option = option.lower()
