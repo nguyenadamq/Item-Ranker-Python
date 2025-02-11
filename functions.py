@@ -1,22 +1,42 @@
 import classes
 
+#loop user input
 def loopUserInput(itemArray):
+    #initial inputs
     itemName = input("\nWhat is the name of your item :")
     itemRank = int(input("What do you rank your item(1-10): "))
+
+    #validate input
+    while (itemRank < 1) or (itemRank > 10):
+                print("Invalid input. Please enter ranking between 1-10.")
+                itemRank = int(input("What do you rank your item(1-10): "))
+
+    #initialize the item with the class
     item = classes.rankedItem(itemName, itemRank)
+
+    #add the item to the list
     itemArray.append(item)
+
+    #run until the if statement uses break statement(user responds no)
     while True:
         test = input("\nWould you like to add another item?(Y/y) or (N/n): ")
+
+        #if the user wants to continue then reask input
         if str(test).lower() == "y":
             itemName = input("What is the name of your item :")
             itemRank = int(input("What do you rank your item(1-10): "))
+
+            #validate item ranking
             while (itemRank < 1) or (itemRank > 10):
                 print("Invalid input. Please enter ranking between 1-10.")
                 itemRank = int(input("What do you rank your item(1-10): "))
             item = classes.rankedItem(itemName, itemRank)
             itemArray.append(item)
+        #if user doesnt want to continue then break the outer while loop
         elif str(test).lower() == "n":
             break
+
+        #invalid input then reloop
         else:
             print("Invalid input. Please try again.")
 
@@ -81,4 +101,3 @@ def merge(left, right):
 
     #return output
     return output
-
