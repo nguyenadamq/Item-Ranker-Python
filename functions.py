@@ -153,8 +153,16 @@ def checkDuplicate(itemArray, searchName, n):
 #function to print all items in the array itemArray and their object values - calling the function "define()"
 def printItems(itemArray):
     print(f"Here is the list of items that you entered: ")
-    for i in range(len(itemArray)):
-        print(itemArray[i].define())
+    print("{", end="")
+    if (len(itemArray) - 1) >= 1:
+        for i in range(len(itemArray) - 1):
+            print(itemArray[i].define(), end=", ")
+        print(itemArray[len(itemArray)-1].define(), end="")
+    else:
+        for i in range(len(itemArray)):
+            print(itemArray[i].define(), end="")
+    
+    print("}")
     return None
 
 #print the rankings(to test sort)
