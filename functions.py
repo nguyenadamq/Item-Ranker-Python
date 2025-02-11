@@ -43,13 +43,30 @@ def loopUserInput(itemArray):
     return itemArray
 
 #function to search for specific itemName within itemArray
-def searchItem(itemArray, searchName, n):
+def searchItem(itemArray, searchName):
+
     #iterate through array of items
     for i in range(len(itemArray)):
-        if itemArray[i].itemName == searchName:
+        if itemArray[i].name.lower() == searchName.lower():
+            return i
+    return -1
 
-            return True
-    return False
+#if duplicate found then ask to overwrite or keep
+def checkDuplicate(itemArray, searchName):
+        
+    #search for itemname
+    n = searchItem(itemArray, searchName)
+
+    #if found then return the information found
+    if(n != -1):
+
+        #located itemname
+        print(f"The element '{searchName}' was found at index {n}")
+        print(itemArray[n].define())
+        
+    else:
+        return False
+
 
 #function to print all items in the array itemArray and their object values - calling the function "define()"
 def printItems(itemArray):
