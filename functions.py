@@ -2,7 +2,47 @@ import classes
 
 #loop user input
 def loopUserInput(itemArray):
-    itemArray = addItem(itemArray)
+
+    option = input("\nChoose an option below(lowercase accepted): " 
+                 + "\n(A) Add items "
+                 + "\n(P) Print items "
+                 + "\n(PR) Print items with their rankings"
+                 + "\n(U) Update items"
+                 + "\n(R) Remove items"
+                 + "\n(E) Exit program\n"
+                 + ": ")
+
+    option = option.lower()
+    while option != "e":
+        if not option:
+            print("Invalid input. Please choose an option.")
+            option = input("\nWould you like to continue adding?(Y/y) or (N/n): ")
+        elif option == "a":
+            #Start getting user input
+            itemArray = addItem(itemArray)
+            
+        #Fix this to only print item names
+        elif option == "p":
+            n = 0
+            printItems(itemArray, n)
+        elif option == "pr":
+            n = 1
+            printItems(itemArray, n)
+        elif option == "u":
+            itemArray = updateItems(itemArray)
+        elif option == "r":
+            itemArray = removeItems(itemArray)
+
+        option = input("\nChoose an option below(lowercase accepted): " 
+                 + "\n(A) Add items "
+                 + "\n(P) Print items "
+                 + "\n(PR) Print items with their rankings"
+                 + "\n(U) Update items"
+                 + "\n(R) Remove items"
+                 + "\n(E) Exit program\n"
+                 + ": ")
+
+        option = option.lower()
     return itemArray
 
 #function to run merge sort of itemRanks within itemArray
@@ -158,20 +198,33 @@ def addItem(itemArray):
     return itemArray
 
 #function to print all items in the array itemArray and their object values - calling the function "define()" - READ
-def printItems(itemArray):
-    print(f"Here is the list of items that you entered: ")
-    print("{", end="")
-    if (len(itemArray) - 1) >= 1:
-        for i in range(len(itemArray) - 1):
-            print(itemArray[i].define(), end=", ")
-        print(itemArray[len(itemArray)-1].define(), end="")
+def printItems(itemArray, n):
+    if n == 1:
+        print(f"Here is the list of items that you entered: ")
+        print("{", end="")
+        if (len(itemArray) - 1) >= 1:
+            for i in range(len(itemArray) - 1):
+                print(itemArray[i].define(), end=", ")
+            print(itemArray[len(itemArray)-1].define(), end="")
+        else:
+            for i in range(len(itemArray)):
+                print(itemArray[i].define(), end="")
+        
+        print("}")
+        return None
     else:
-        for i in range(len(itemArray)):
-            print(itemArray[i].define(), end="")
-    
-    print("}")
-    return None
-
+        print(f"Here is the list of items that you entered: ")
+        print("{", end="")
+        if (len(itemArray) - 1) >= 1:
+            for i in range(len(itemArray) - 1):
+                print(itemArray[i].name, end=", ")
+            print(itemArray[len(itemArray)-1].name, end="")
+        else:
+            for i in range(len(itemArray)):
+                print(itemArray[i].name, end="")
+        
+        print("}")
+        return None
 #print the rankings(to test sort)
 def printRankings(itemArray):
     for i in range(len(itemArray)):
@@ -230,7 +283,7 @@ def checkDuplicate(itemArray, searchName, n):
         itemArray = sort(itemArray)
     return
 
-#Update item
+#UPDATE item
 def overwrite(itemArray,n):
     #get and validate item rank (finishing user input for overwrite)
     itemRank = int(input("What do you rank your item(1-10): "))
@@ -246,9 +299,61 @@ def overwrite(itemArray,n):
         print("Item has been successfully overwritten.")
 
 #DELETE ITEM
-def removeItem(itemArray):
+def removeItems(itemArray):
+    #initial inputs
+    itemName = input("\nWhat is the name of your item: ")
+
+    #validate input to be not empty
+    while not itemName:
+        print("Invalid input. Please enter a name for your item: ")
+        itemName = input("\nWhat is the name of your item: ")
+
+    #find index then remove
+    n = searchItem(itemArray, itemName)
+
+    #remove item
+    while n == -1:
+        #item not found
+        print(itemName + " not found in list.")
+
+        #initial inputs
+        itemName = input("\nWhat is the name of your item: ")
+
+        #validate input to be not empty
+        while not itemName:
+            print("Invalid input. Please enter a name for your item: ")
+            itemName = input("\nWhat is the name of your item: ")
+
+        #find index then remove
+        n = searchItem(itemArray, itemName)
+    removedItem = itemArray.pop(n)
+
+    print(removedItem.name + "has been removed")
+
+    option = input("Would you like to remove another item(Y/y) or (N/n)")
+    option = option.lower()
+    while option != "n":
+        if not option:
+            print("Invalid input. Please enter an option.")
+        elif option == "y":
+            #initial inputs
+            itemName = input("\nWhat is the name of your item: ")
+
+            #validate input to be not empty
+            while not itemName:
+                print("Invalid input. Please enter a name for your item: ")
+                itemName = input("\nWhat is the name of your item: ")
+
+            #find index then remove
+            n = searchItem(itemArray, itemName)
+
+            #remove and save item
+            removedItem = itemArray.pop(n)
+
+            #print name
+            print(removedItem.name + "has been removed")
     return
-def addItem2(itemArray):
+def addFirstItem(itemArray):
     #initial inputs
     itemName = input("\nWhat is the name of your item: ")
     while not itemName:
@@ -266,6 +371,4 @@ def addItem2(itemArray):
 
         #add the item to the list
         itemArray.append(item)
-
-        #sort itemArray right after append
-        itemArray = sort(itemArray)
+    return itemArray
