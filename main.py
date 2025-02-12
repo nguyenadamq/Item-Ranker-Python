@@ -1,7 +1,7 @@
 #import class
 import classes
 import functions
-#Intro to programitem
+#Intro to program
 print("Welcome to the Comparative Item Ranker Program!")
 itemArray = []
 
