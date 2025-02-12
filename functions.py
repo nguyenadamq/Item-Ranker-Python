@@ -4,6 +4,11 @@ import classes
 def loopUserInput(itemArray):
     #initial inputs
     itemName = input("\nWhat is the name of your item: ")
+    while not itemName:
+        print("Invalid input. Please enter a name for your item: ")
+        itemName = input("\nWhat is the name of your item: ")
+
+    #search item for checkDuplicate
     n = searchItem(itemArray, itemName)
     ranked = False
     while(n != -1):
@@ -55,7 +60,6 @@ def loopUserInput(itemArray):
 
         #sort itemArray right after append
         itemArray = sort(itemArray)
-
     #run until the if statement uses break statement(user responds no)
     while True:
         test = input("\nWould you like to add another item?(Y/y) or (N/n): ")
@@ -133,22 +137,56 @@ def searchItem(itemArray, searchName):
 
 #if duplicate found then ask to overwrite or keep
 def checkDuplicate(itemArray, searchName, n):
-        
-    #search for itemname
-    n = searchItem(itemArray, searchName)
+    while(n != -1):
 
-    #if found then return the information found
-    if(n >= 0):
-        print(f"The value of n: {n}")
-        
-        #located itemname
-        print(f"The element '{searchName}' was found at index {n} (checkDuplicate)")
-        print(itemArray[n].define())
-        return True
-    else:
-        print(f"The element '{searchName}' was not found in the list")
-        return False
+        #Duplicate found and print index
+        print(f"The name {itemName} is found at index {n} (loopuser)")
+        option = input("Would you like to overwrite(O/o) or enter a new item?(N/n)? ")
+        option.lower()
 
+        #Input validation
+        while (option != "o") and (option != "n"):
+            print("Invalid input. Please check the input options and try again.")
+            option = input("Would you like to overwrite(O/o) or enter a new item?(N/n)? ")
+        
+        if option == "o":
+
+            #get and validate item rank (finishing user input for overwrite)
+            itemRank = int(input("What do you rank your item(1-10): "))
+            while (itemRank < 1) or (itemRank > 10):
+                print("Invalid input. Please enter ranking between 1-10.")
+                itemRank = int(input("What do you rank your item(1-10): "))
+            
+            item = classes.rankedItem(itemName, itemRank)
+            itemArray[n] = item
+
+            #sort array after update with override
+            itemArray = sort(itemArray)
+            n = -1
+            print("Item has been successfully overwritten.")
+            ranked = True
+
+        #user chooses new name
+        else:
+            itemName = input("\nWhat is the name of your item: ")
+
+    #move here is item wasnt ranked during override
+    if ranked == False:
+        #get and validate item rank
+        itemRank = int(input("What do you rank your item(1-10): "))
+        while (itemRank < 1) or (itemRank > 10):
+            print("Invalid input. Please enter ranking between 1-10.")
+            itemRank = int(input("What do you rank your item(1-10): "))
+
+        #initialize the item with the class
+        item = classes.rankedItem(itemName, itemRank)
+
+        #add the item to the list
+        itemArray.append(item)
+
+        #sort itemArray right after append
+        itemArray = sort(itemArray)
+    return
 
 #function to print all items in the array itemArray and their object values - calling the function "define()"
 def printItems(itemArray):
