@@ -2,6 +2,49 @@ import classes
 
 #loop user input
 def loopUserInput(itemArray):
+    itemArray = addItem(itemArray)
+    return itemArray
+
+#function to run merge sort of itemRanks within itemArray
+def sort(itemArray):
+    if len(itemArray) <= 1:
+        return itemArray
+    
+    #initialize middle point
+    mid = len(itemArray) // 2
+
+    #Recursively check each side
+    left_side = sort(itemArray[:mid])
+
+    right_side = sort(itemArray[mid:])
+
+
+    return merge(left_side, right_side)
+
+#mergesort helper function
+def merge(left, right):
+    output = []
+    i = 0
+    j = 0
+
+    #loop until all numbers are checked
+    while i < len(left) and j < len(right):
+        if left[i].rank < right[j].rank:
+            output.append(left[i])
+            i += 1
+        else:
+            output.append(right[j])
+            j += 1
+    
+    #include end of partitions
+    output.extend(left[i:])
+    output.extend(right[j:])
+
+    #return output
+    return output
+
+#CREATE item
+def addItem(itemArray):
     #initial inputs
     itemName = input("\nWhat is the name of your item: ")
     while not itemName:
@@ -24,22 +67,10 @@ def loopUserInput(itemArray):
             option = input("Would you like to overwrite(O/o) or enter a new item?(N/n)? ")
         
         if option == "o":
-
-            #get and validate item rank (finishing user input for overwrite)
-            itemRank = int(input("What do you rank your item(1-10): "))
-            while (itemRank < 1) or (itemRank > 10):
-                print("Invalid input. Please enter ranking between 1-10.")
-                itemRank = int(input("What do you rank your item(1-10): "))
-            
-            item = classes.rankedItem(itemName, itemRank)
-            itemArray[n] = item
-
-            #sort array after update with override
-            itemArray = sort(itemArray)
+            itemArray = overwrite(itemArray,n)
             n = -1
             print("Item has been successfully overwritten.")
             ranked = True
-
         #user chooses new name
         else:
             itemName = input("\nWhat is the name of your item: ")
@@ -126,7 +157,29 @@ def loopUserInput(itemArray):
 
     return itemArray
 
-#function to search for specific itemName within itemArray
+#function to print all items in the array itemArray and their object values - calling the function "define()" - READ
+def printItems(itemArray):
+    print(f"Here is the list of items that you entered: ")
+    print("{", end="")
+    if (len(itemArray) - 1) >= 1:
+        for i in range(len(itemArray) - 1):
+            print(itemArray[i].define(), end=", ")
+        print(itemArray[len(itemArray)-1].define(), end="")
+    else:
+        for i in range(len(itemArray)):
+            print(itemArray[i].define(), end="")
+    
+    print("}")
+    return None
+
+#print the rankings(to test sort)
+def printRankings(itemArray):
+    for i in range(len(itemArray)):
+        print(itemArray[i].rank, end = " ")
+    print("\n")
+    return None
+
+#function to search for specific itemName within itemArray - UPDATE
 def searchItem(itemArray, searchName):
 
     #iterate through array of items
@@ -150,18 +203,7 @@ def checkDuplicate(itemArray, searchName, n):
             option = input("Would you like to overwrite(O/o) or enter a new item?(N/n)? ")
         
         if option == "o":
-
-            #get and validate item rank (finishing user input for overwrite)
-            itemRank = int(input("What do you rank your item(1-10): "))
-            while (itemRank < 1) or (itemRank > 10):
-                print("Invalid input. Please enter ranking between 1-10.")
-                itemRank = int(input("What do you rank your item(1-10): "))
-            
-            item = classes.rankedItem(itemName, itemRank)
-            itemArray[n] = item
-
-            #sort array after update with override
-            itemArray = sort(itemArray)
+            itemArray = overwrite(itemArray,n)
             n = -1
             print("Item has been successfully overwritten.")
             ranked = True
@@ -188,62 +230,42 @@ def checkDuplicate(itemArray, searchName, n):
         itemArray = sort(itemArray)
     return
 
-#function to print all items in the array itemArray and their object values - calling the function "define()"
-def printItems(itemArray):
-    print(f"Here is the list of items that you entered: ")
-    print("{", end="")
-    if (len(itemArray) - 1) >= 1:
-        for i in range(len(itemArray) - 1):
-            print(itemArray[i].define(), end=", ")
-        print(itemArray[len(itemArray)-1].define(), end="")
-    else:
-        for i in range(len(itemArray)):
-            print(itemArray[i].define(), end="")
-    
-    print("}")
-    return None
+#Update item
+def overwrite(itemArray,n):
+    #get and validate item rank (finishing user input for overwrite)
+    itemRank = int(input("What do you rank your item(1-10): "))
+    while (itemRank < 1) or (itemRank > 10):
+        print("Invalid input. Please enter ranking between 1-10.")
+        itemRank = int(input("What do you rank your item(1-10): "))
+            
+        item = classes.rankedItem(itemName, itemRank)
+        itemArray[n] = item
 
-#print the rankings(to test sort)
-def printRankings(itemArray):
-    for i in range(len(itemArray)):
-        print(itemArray[i].rank, end = " ")
-    print("\n")
-    return None
+        #sort array after update with override
+        itemArray = sort(itemArray)
+        print("Item has been successfully overwritten.")
 
-#function to run merge sort of itemRanks within itemArray
-def sort(itemArray):
-    if len(itemArray) <= 1:
-        return itemArray
-    
-    #initialize middle point
-    mid = len(itemArray) // 2
+#DELETE ITEM
+def removeItem(itemArray):
+    return
+def addItem2(itemArray):
+    #initial inputs
+    itemName = input("\nWhat is the name of your item: ")
+    while not itemName:
+        print("Invalid input. Please enter a name for your item: ")
+        itemName = input("\nWhat is the name of your item: ")
 
-    #Recursively check each side
-    left_side = sort(itemArray[:mid])
+    #get and validate item rank
+    itemRank = int(input("What do you rank your item(1-10): "))
+    while (itemRank < 1) or (itemRank > 10):
+        print("Invalid input. Please enter ranking between 1-10.")
+        itemRank = int(input("What do you rank your item(1-10): "))
 
-    right_side = sort(itemArray[mid:])
+        #initialize the item with the class
+        item = classes.rankedItem(itemName, itemRank)
 
+        #add the item to the list
+        itemArray.append(item)
 
-    return merge(left_side, right_side)
-
-#mergesort helper function
-def merge(left, right):
-    output = []
-    i = 0
-    j = 0
-
-    #loop until all numbers are checked
-    while i < len(left) and j < len(right):
-        if left[i].rank < right[j].rank:
-            output.append(left[i])
-            i += 1
-        else:
-            output.append(right[j])
-            j += 1
-    
-    #include end of partitions
-    output.extend(left[i:])
-    output.extend(right[j:])
-
-    #return output
-    return output
+        #sort itemArray right after append
+        itemArray = sort(itemArray)
