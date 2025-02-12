@@ -16,14 +16,6 @@ def loopUserInput(itemArray):
     while option != "e":
         if not option:
             print("Invalid input. Please choose an option.")
-            option = input("\nChoose an option below(lowercase accepted): " 
-                 + "\n(A)  Add items "
-                 + "\n(P)  Print items "
-                 + "\n(PR) Print items with their rankings"
-                 + "\n(U)  Update items"
-                 + "\n(R)  Remove items"
-                 + "\n(E)  Exit program\n"
-                 + ": ")
         
         elif option == "a":
             #Start getting user input
@@ -139,7 +131,7 @@ def addItem(itemArray):
                 if 1 <= itemRank <= 10:
                     break
                 else:
-                    print("Invalid input. Please enter ranking between 1-10.")
+                    print("\nInvalid input. Please enter ranking between 1-10.\n")
             except  ValueError:
                 print("Invalid input. Please enter valid integer between 1-10.\n")
 
@@ -185,7 +177,7 @@ def addItem(itemArray):
                             if 1 <= itemRank <= 10:
                                 break
                             else:
-                                print("Invalid input. Please enter ranking between 1-10.")
+                                print("\nInvalid input. Please enter ranking between 1-10.\n")
                         except  ValueError:
                             print("Invalid input. Please enter valid integer between 1-10.\n")
                     
@@ -237,7 +229,7 @@ def addItem(itemArray):
 #function to print all items in the array itemArray and their object values - calling the function "define()" - READ
 def printItems(itemArray, n):
     if n == 1:
-        print(f"Here is the list of items that you entered: ")
+        print(f"Here is the list of items: ")
         print("{", end="")
         if (len(itemArray) - 1) >= 1:
             for i in range(len(itemArray) - 1):
@@ -250,7 +242,7 @@ def printItems(itemArray, n):
         print("}")
         return None
     else:
-        print(f"Here is the list of items that you entered: ")
+        print(f"Here is the list of items: ")
         print("{", end="")
         if (len(itemArray) - 1) >= 1:
             for i in range(len(itemArray) - 1):
@@ -380,7 +372,7 @@ def updateItems(itemArray):
 
     #while the item is not found
     while(n == -1):
-        print(f"{itemName} was not found in the list. Please enter the item name again.")
+        print(f"\n'{itemName}' was not found in the list. Please enter the item name again.")
         printItems(itemArray, 1)
         itemName = input("\nWhat is the name of your item you'd like to update: ")
         n = searchItem(itemArray, itemName)
@@ -398,9 +390,11 @@ def updateItems(itemArray):
         n = searchItem(itemArray, itemName)
 
         while(n == -1):
-            print(f"{itemName} was not found in the list. Please enter the item name again.")
+            print(f"\n'{itemName}' was not found in the list. Please enter the item name again.")
             itemName = input("\nWhat is the name of your item you'd like to update: ")
             n = searchItem(itemArray, itemName)
+        
+        overwrite(itemArray, itemName, n)
                 
         option = input("Would you like to update another item?(Y/y) (N/n): ")
         option.lower()
