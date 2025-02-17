@@ -5,5 +5,5 @@ class rankedItem:
 
         return
     def define(self):
-        return (f"'{self.name}: {self.rank}")
+        return (f"'{self.name}': {self.rank}")
         

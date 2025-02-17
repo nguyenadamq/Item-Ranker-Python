@@ -466,14 +466,25 @@ def loadFromFile(itemArray):
     if state == False:
         print(filename + " not found in directory. Please try again.")
     else:
+        itemArray = []
         file_path = filename + ".txt"
         
         with open("./itemlists/" + file_path, 'r') as file:
             file_content = file.read()
         print("File content: " + file_content)
-        itemArray = file_content
-        
-    print(itemArray)
+
+        #parse input to be readable inputs into values for object rankedItem
+        file_content = file_content.strip("{}\'")
+        file_content = file_content.replace("'", "")
+        file_content = file_content.replace(":", "").replace(",", "").split()
+
+        print("File content after strip: " + str(file_content))
+        for i in range(0, len(file_content), 2):
+            itemName = str(file_content[i])
+            itemRank = int(file_content[i+1])
+            item = classes.rankedItem(itemName, itemRank)
+            itemArray.append(item)
+            print("item: " + item.define())
     
     return itemArray
 
