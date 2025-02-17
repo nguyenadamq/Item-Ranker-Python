@@ -1,4 +1,6 @@
 import classes
+import os
+import json
 
 #loop user input
 def loopUserInput(itemArray):
@@ -10,6 +12,7 @@ def loopUserInput(itemArray):
                  + "\n(U)  Update items"
                  + "\n(R)  Remove items"
                  + "\n(W)  Write to file"
+                 + "\n(L)  Load from file"
                  + "\n(E)  Exit program\n"
                  + ": ")
 
@@ -37,6 +40,8 @@ def loopUserInput(itemArray):
             itemArray = removeItems(itemArray)
         elif option == "w":
             filenum = writeToFile(itemArray, filenum)
+        elif option == "l":
+            itemArray = loadFromFile(itemArray)
         else:
             print("Invalid choice. Please try again.")
 
@@ -47,6 +52,7 @@ def loopUserInput(itemArray):
                  + "\n(U)  Update items"
                  + "\n(R)  Remove items"
                  + "\n(W)  Write to file"
+                 + "\n(L)  Load from file"
                  + "\n(E)  Exit program\n"
                  + ": ")
         option = option.lower()
@@ -413,6 +419,7 @@ def arrayToString(itemArray):
     #only 1 item then no comma at end
     if len(itemArray) == 1:
         sentence += "'" + itemArray[0].name + "'" + ": " + str(itemArray[0].rank)
+
     #otherwise add the comma for all except end
     else:
         for i in range(len(itemArray) - 1):
@@ -431,7 +438,7 @@ def writeToFile(itemArray, filenum):
     #otherwise use arrayToString function and print to file
     else:
         sentence = arrayToString(itemArray)
-        f = open("itemlist" + str(filenum) + ".txt", "w")
+        f = open("./itemlists/itemlist" + str(filenum) + ".txt", "w")
         f.write(sentence)
 
         #print user statement
@@ -443,3 +450,42 @@ def writeToFile(itemArray, filenum):
     #increment f for new item file for next time
     filenum = filenum + 1
     return filenum
+
+def loadFromFile(itemArray):
+    state = False
+    print("\nList of files to load from: ")
+    print(os.listdir("./itemlists"))
+
+    filename = input("Which list would you like to load from? (Example: 'itemlist1.txt' -> 'itemlist1'): ")
+    filename.lower()
+
+    for file in os.listdir("./itemlists"):
+        file.lower()
+        if(filename + ".txt" == file):
+            state = True
+    if state == False:
+        print(filename + " not found in directory. Please try again.")
+    else:
+        file_path = filename + ".txt"
+        
+        with open("./itemlists/" + file_path, 'r') as file:
+            file_content = file.read()
+        print("File content: " + file_content)
+        itemArray = file_content
+        
+    print(itemArray)
+    
+    return itemArray
+
+def testWriteToJson():
+    print("testWriteToJson executed.")
+    data = {
+        "name": "John Doe",
+        "age": 30,
+        "city": "New York"
+    }
+
+    with open("data.json", "w") as file:
+        json.dump(data, file, indent=4)
+
+    return
