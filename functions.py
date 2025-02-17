@@ -25,9 +25,11 @@ def loopUserInput(itemArray):
         #Fix this to only print item names
         elif option == "p":
             n = 0
+            print(f"\nHere is the list of items: ")
             printItems(itemArray, n)
         elif option == "pr":
             n = 1
+            print(f"\nHere is the list of items with rankings: ")
             printItems(itemArray, n)
         elif option == "u":
             itemArray = updateItems(itemArray)
@@ -234,7 +236,6 @@ def addItem(itemArray):
 #function to print all items in the array itemArray and their object values - calling the function "define()" - READ
 def printItems(itemArray, n):
     if n == 1:
-        print(f"Here is the list of items: ")
         print("{", end="")
         if (len(itemArray) - 1) >= 1:
             for i in range(len(itemArray) - 1):
@@ -247,7 +248,6 @@ def printItems(itemArray, n):
         print("}")
         return None
     else:
-        print(f"Here is the list of items: ")
         print("{", end="")
         if (len(itemArray) - 1) >= 1:
             for i in range(len(itemArray) - 1):
@@ -407,10 +407,9 @@ def updateItems(itemArray):
     #return updated array
     return itemArray
 
-def arrayToString(itemArray):\
+def arrayToString(itemArray):
     #start of file
-    sentence = "Here is the list of items: "
-    sentence += "{"
+    sentence = "{"
     #only 1 item then no comma at end
     if len(itemArray) == 1:
         sentence += "'" + itemArray[0].name + "'" + ": " + str(itemArray[0].rank)
@@ -425,9 +424,21 @@ def arrayToString(itemArray):\
     return sentence
 
 def writeToFile(itemArray, filenum):
-    sentence = arrayToString(itemArray)
-    f = open("itemlist" + str(filenum) + ".txt", "w")
-    f.write(sentence)
+    #if list is empty then 
+    if len(itemArray) < 1:
+        print("\nItem list is empty. No file had been made.")
+        return filenum
+    #otherwise use arrayToString function and print to file
+    else:
+        sentence = arrayToString(itemArray)
+        f = open("itemlist" + str(filenum) + ".txt", "w")
+        f.write(sentence)
+
+        #print user statement
+        print("\nItem list: ")
+        printItems(itemArray, 1)
+        print("has been successfully written to " + "itemlist" + str(filenum) + ".txt")
+
 
     #increment f for new item file for next time
     filenum = filenum + 1
