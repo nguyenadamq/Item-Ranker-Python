@@ -96,8 +96,6 @@ def addItem(itemArray):
     while not itemName:
         print("Invalid input. Please enter a name for your item.")
         itemName = input("\nWhat is the name of your item: ")
-        
-    print("Current itemArray length: " + str(len(itemArray)))
 
     if len(itemArray) >= 1:
         #search item for duplicate
@@ -409,10 +407,21 @@ def updateItems(itemArray):
     #return updated array
     return itemArray
 
-def arrayToString(itemArray):
+def arrayToString(itemArray):\
+    #start of file
     sentence = "Here is the list of items: "
-    for i in range(len(itemArray)):
-        sentence += itemArray[i].name + " "
+    sentence += "{"
+    #only 1 item then no comma at end
+    if len(itemArray) == 1:
+        sentence += "'" + itemArray[0].name + "'" + ": " + str(itemArray[0].rank)
+    #otherwise add the comma for all except end
+    else:
+        for i in range(len(itemArray) - 1):
+            sentence += "'" + itemArray[i].name + "'" + ": " + str(itemArray[i].rank) + ", "
+
+        sentence += "'" + itemArray[len(itemArray)-1].name + "'" + ": " + str(itemArray[len(itemArray)-1].rank)
+    sentence += "}"
+
     return sentence
 
 def writeToFile(itemArray, filenum):
