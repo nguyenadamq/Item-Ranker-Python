@@ -2,13 +2,14 @@ import classes
 
 #loop user input
 def loopUserInput(itemArray):
-
+    filenum = 1
     option = input("\nChoose an option below(lowercase accepted): " 
                  + "\n(A)  Add items "
                  + "\n(P)  Print items "
                  + "\n(PR) Print items with their rankings"
                  + "\n(U)  Update items"
                  + "\n(R)  Remove items"
+                 + "\n(W)  Write to file"
                  + "\n(E)  Exit program\n"
                  + ": ")
 
@@ -32,6 +33,8 @@ def loopUserInput(itemArray):
             itemArray = updateItems(itemArray)
         elif option == "r":
             itemArray = removeItems(itemArray)
+        elif option == "w":
+            filenum = writeToFile(itemArray, filenum)
         else:
             print("Invalid choice. Please try again.")
 
@@ -41,6 +44,7 @@ def loopUserInput(itemArray):
                  + "\n(PR) Print items with their rankings"
                  + "\n(U)  Update items"
                  + "\n(R)  Remove items"
+                 + "\n(W)  Write to file"
                  + "\n(E)  Exit program\n"
                  + ": ")
         option = option.lower()
@@ -92,6 +96,9 @@ def addItem(itemArray):
     while not itemName:
         print("Invalid input. Please enter a name for your item.")
         itemName = input("\nWhat is the name of your item: ")
+        
+    print("Current itemArray length: " + str(len(itemArray)))
+
     if len(itemArray) >= 1:
         #search item for duplicate
         n = searchItem(itemArray, itemName)
@@ -326,7 +333,7 @@ def removeItems(itemArray):
     print("\n'" + removedItem.name + "'" + " has been removed")
     if len(itemArray) == 0:
         print("\nList is now empty...Returning to options.")
-        return
+        return itemArray
 
     option = input("\nWould you like to remove another item(Y/y) or (N/n)")
     option = option.lower()
@@ -354,8 +361,8 @@ def removeItems(itemArray):
             #if list becomes empty then exit function
             if len(itemArray) == 0:
                 print("\nList is now empty...Returning to options.")
-                return
-    return
+                return itemArray
+    return itemArray
 
 def updateItems(itemArray):
     #if the list is empty then exit
@@ -401,3 +408,18 @@ def updateItems(itemArray):
 
     #return updated array
     return itemArray
+
+def arrayToString(itemArray):
+    sentence = "Here is the list of items: "
+    for i in range(len(itemArray)):
+        sentence += itemArray[i].name + " "
+    return sentence
+
+def writeToFile(itemArray, filenum):
+    sentence = arrayToString(itemArray)
+    f = open("itemlist" + str(filenum) + ".txt", "w")
+    f.write(sentence)
+
+    #increment f for new item file for next time
+    filenum = filenum + 1
+    return filenum
