@@ -212,12 +212,12 @@ def overwrite(itemArray,itemName, n):
         print("Invalid input. Please enter ranking between 1-10.")
         itemRank = int(input("What do you rank your item(1-10): "))
             
-        item = classes.rankedItem(itemName, itemRank)
-        itemArray[n] = item
+    item = classes.rankedItem(itemName, itemRank)
+    itemArray[n] = item
 
-        #sort array after update with override
-        itemArray = sort(itemArray)
-        print("Item has been successfully updated.")
+    #sort array after update with override
+    itemArray = sort(itemArray)
+    print("Item has been successfully updated.")
     return itemArray
 
 #DELETE ITEM
