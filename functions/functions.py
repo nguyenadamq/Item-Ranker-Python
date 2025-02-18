@@ -1,62 +1,7 @@
 import classes
 import os
 import json
-
-#loop user input
-def loopUserInput(itemArray):
-    filenum = 1
-    option = input("\nChoose an option below(lowercase accepted): " 
-                 + "\n(A)  Add items "
-                 + "\n(P)  Print items "
-                 + "\n(PR) Print items with their rankings"
-                 + "\n(U)  Update items"
-                 + "\n(R)  Remove items"
-                 + "\n(W)  Write to file"
-                 + "\n(L)  Load from file"
-                 + "\n(E)  Exit program\n"
-                 + ": ")
-
-    option = option.lower()
-    while option != "e":
-        if not option:
-            print("Invalid input. Please choose an option.")
-        
-        elif option == "a":
-            #Start getting user input
-            itemArray = addItem(itemArray)
-            
-        #Fix this to only print item names
-        elif option == "p":
-            n = 0
-            print(f"\nHere is the list of items: ")
-            printItems(itemArray, n)
-        elif option == "pr":
-            n = 1
-            print(f"\nHere is the list of items with rankings: ")
-            printItems(itemArray, n)
-        elif option == "u":
-            itemArray = updateItems(itemArray)
-        elif option == "r":
-            itemArray = removeItems(itemArray)
-        elif option == "w":
-            filenum = writeToFile(itemArray, filenum)
-        elif option == "l":
-            itemArray = loadFromFile(itemArray)
-        else:
-            print("Invalid choice. Please try again.")
-
-        option = input("\nChoose an option below(lowercase accepted): " 
-                 + "\n(A)  Add items "
-                 + "\n(P)  Print items "
-                 + "\n(PR) Print items with their rankings"
-                 + "\n(U)  Update items"
-                 + "\n(R)  Remove items"
-                 + "\n(W)  Write to file"
-                 + "\n(L)  Load from file"
-                 + "\n(E)  Exit program\n"
-                 + ": ")
-        option = option.lower()
-    return itemArray
+import functions.helper as h
 
 #function to run merge sort of itemRanks within itemArray
 def sort(itemArray):
@@ -72,29 +17,7 @@ def sort(itemArray):
     right_side = sort(itemArray[mid:])
 
 
-    return merge(left_side, right_side)
-
-#mergesort helper function
-def merge(left, right):
-    output = []
-    i = 0
-    j = 0
-
-    #loop until all numbers are checked
-    while i < len(left) and j < len(right):
-        if left[i].rank < right[j].rank:
-            output.append(left[i])
-            i += 1
-        else:
-            output.append(right[j])
-            j += 1
-    
-    #include end of partitions
-    output.extend(left[i:])
-    output.extend(right[j:])
-
-    #return output
-    return output
+    return h.merge(left_side, right_side)
 
 #CREATE item
 def addItem(itemArray):
@@ -295,6 +218,7 @@ def overwrite(itemArray,itemName, n):
         #sort array after update with override
         itemArray = sort(itemArray)
         print("Item has been successfully updated.")
+    return itemArray
 
 #DELETE ITEM
 def removeItems(itemArray):
@@ -389,7 +313,7 @@ def updateItems(itemArray):
         n = searchItem(itemArray, itemName)
 
     #update item
-    overwrite(itemArray, itemName, n)
+    itemArray = overwrite(itemArray, itemName, n)
 
     #ask for option input
     option = input("Would you like to update another item?(Y/y) (N/n): ")
@@ -405,7 +329,7 @@ def updateItems(itemArray):
             itemName = input("\nWhat is the name of your item you'd like to update: ")
             n = searchItem(itemArray, itemName)
         
-        overwrite(itemArray, itemName, n)
+        itemArray = overwrite(itemArray, itemName, n)
                 
         option = input("Would you like to update another item?(Y/y) (N/n): ")
         option.lower()
